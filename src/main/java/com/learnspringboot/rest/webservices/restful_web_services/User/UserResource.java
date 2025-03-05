@@ -1,8 +1,11 @@
 package com.learnspringboot.rest.webservices.restful_web_services.User;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,7 +33,12 @@ public User retrieveSpecificUser(@PathVariable int idno){
 
 @PostMapping("/users")
 
-public void createuser(@RequestBody User user){
-  service.save(user);
+public ResponseEntity<Object> createuser(@RequestBody User user){
+  User savedUser=service.save(user);
+  URI location=ServletUriComponentsBuilder.fromCurrentRequest()
+  .path("/{id}")
+  .buildAndExpand(savedUser.getId())
+  .toUri();
+return ResponseEntity.created(location).build();
 }
 }
