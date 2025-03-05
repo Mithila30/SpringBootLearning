@@ -4,7 +4,11 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 @RestController
@@ -14,12 +18,19 @@ public class UserResource {
         this.service=service;
     }
 //Get Resources
-@GetMapping("/users")
-public String getMethodName(@RequestParam String param) {
-    return new String();
-}
-
+@GetMapping(path="/users")
 public List<User> retrieveAllUsers(){
     return service.findAll();
+}
+
+@GetMapping(path="/users/{idno}")
+public User retrieveSpecificUser(@PathVariable int idno){
+    return service.findOne(idno);
+}
+
+@PostMapping("/users")
+
+public void createuser(@RequestBody User user){
+  service.save(user);
 }
 }
